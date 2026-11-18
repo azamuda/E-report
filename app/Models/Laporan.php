@@ -4,15 +4,16 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Laporan extends Model
 {
     use HasFactory;
 
     public const STATUES = [
-        'Pedding' => 'menunggu'
-        'proses' => 'diproses'
-        'selesai' => 'selesai'
+        'Pending' => 'menunggu',
+        'proses' => 'diproses',
+        'selesai' => 'selesai',
     ];
 
     protected $fillable = [
@@ -33,9 +34,9 @@ class Laporan extends Model
         ];
     }
 
-    protected function pelapor(): BelongTo
+    public function pelapor(): BelongsTo
     {
-        return $this->belongTo(user::class, 'pelapor_id' );
+        return $this->belongsTo(User::class, 'pelapor_id');
     }
 
     public function statusDescription(): string
@@ -43,6 +44,7 @@ class Laporan extends Model
         return match ($this->status) {
             'proses' => 'pengaduan sedang ditindaklanjuti',
             'selesai' => 'pengaduan telah selesai ditangani',
-            'default' => 'pengaduan menunggu peninjauan admin',
-            };
+            default => 'pengaduan menunggu peninjauan admin',
+        };
     }
+}
